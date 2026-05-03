@@ -9,6 +9,60 @@
  */
 {
   "sections": {
+    "slideshow_nbDpNa": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_hrzkxp": {
+          "type": "slide",
+          "settings": {
+            "image_overlay_opacity": 0,
+            "heading": "Image slide",
+            "heading_size": "h1",
+            "subheading": "Tell your brand's story through images",
+            "button_label": "Button label",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": ""
+          }
+        },
+        "slide_aYUDeW": {
+          "type": "slide",
+          "settings": {
+            "image_overlay_opacity": 0,
+            "heading": "Image slide",
+            "heading_size": "h1",
+            "subheading": "Tell your brand's story through images",
+            "button_label": "Button label",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_hrzkxp",
+        "slide_aYUDeW"
+      ],
+      "name": "t:sections.slideshow.presets.name",
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "medium",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "image_behavior": "none",
+        "show_text_below": true,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
     "smart_bundle_builder_dA9WYe": {
       "type": "smart-bundle-builder",
       "name": "Smart bundle builder",
@@ -26,11 +80,11 @@
           "the-multi-location-snowboard",
           "the-archived-snowboard"
         ],
-        "bundle_size": 3,
+        "bundle_size": 1,
         "discount_2": 5,
         "discount_3": 10,
         "discount_4": 15,
-        "redirect_to_cart": false,
+        "redirect_to_cart": true,
         "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 36
@@ -38,6 +92,7 @@
     }
   },
   "order": [
+    "slideshow_nbDpNa",
     "smart_bundle_builder_dA9WYe"
   ]
 }
