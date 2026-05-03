@@ -1,0 +1,310 @@
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'section-smart-bundle-builder.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'smart-bundle-builder.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign curated_products = section.settings.products
+  assign curated_count = curated_products | size
+  assign bs = section.settings.bundle_size | plus: 0
+  assign bundle_checkout = bs
+  assign bundle_capacity = bs
+  if curated_count > 0
+    if bs > curated_count
+      assign bundle_checkout = curated_count
+    endif
+    if bs < curated_count
+      assign bundle_capacity = curated_count
+    endif
+  endif
+  assign discount_2 = section.settings.discount_2 | plus: 0
+  assign discount_3 = section.settings.discount_3 | plus: 0
+  assign discount_4 = section.settings.discount_4 | plus: 0
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .smart-bundle-{{ section.id }} {
+    --sb-gap: 1.2rem;
+    --sb-radius: var(--media-radius, 1.2rem);
+    --sb-shadow: 0 8px 30px rgba(var(--color-foreground), 0.06);
+    --sb-border: 1px solid rgba(var(--color-foreground), 0.12);
+    --sb-panel-width: 34rem;
+  }
+{%- endstyle -%}
+
+<div class="custom-smart-bundle color-{{ section.settings.color_scheme }} isolate gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+    <smart-bundle-builder
+      class="smart-bundle smart-bundle-{{ section.id }}"
+      data-section-id="{{ section.id }}"
+      data-bundle-checkout="{{ bundle_checkout }}"
+      data-bundle-capacity="{{ bundle_capacity }}"
+      data-currency="{{ cart.currency.iso_code }}"
+      data-discount-2="{{ discount_2 }}"
+      data-discount-3="{{ discount_3 }}"
+      data-discount-4="{{ discount_4 }}"
+      {% if section.settings.redirect_to_cart %}data-redirect-to-cart="true"{% endif %}
+    >
+      <header class="smart-bundle__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="smart-bundle__title {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <div class="smart-bundle__subheading rte">{{ section.settings.subheading }}</div>
+        {%- endif -%}
+        {%- if curated_count > 0 and curated_count < 4 -%}
+          <p class="smart-bundle__subheading" role="note">
+            Add at least 4 products in the section settings for the best bundle experience.
+          </p>
+        {%- endif -%}
+      </header>
+
+      {%- if curated_count < 1 -%}
+        <div class="smart-bundle__empty">
+          {{ 'sections.collection_template.empty' | t | default: 'Select products in the section settings to get started.' }}
+        </div>
+      {%- else -%}
+        <div class="smart-bundle__layout">
+          <div class="smart-bundle__grid" role="list" aria-label="Bundle products">
+            {%- for product in curated_products -%}
+              {% render 'smart-bundle-product-card',
+                product: product,
+                section_id: section.id,
+                index: forloop.index0
+              %}
+            {%- endfor -%}
+          </div>
+
+          <aside class="smart-bundle__summary-wrap" aria-label="Bundle summary">
+            <div class="smart-bundle__summary" data-summary hidden>
+              <div class="smart-bundle__summary-header">
+                <h3 class="smart-bundle__summary-title">Your bundle</h3>
+              </div>
+
+              <div class="smart-bundle__summary-items" role="list" aria-label="Selected items" data-items></div>
+
+              <div class="smart-bundle__totals" aria-live="polite" aria-atomic="true">
+                <div class="smart-bundle__total-row">
+                  <span class="smart-bundle__label">Subtotal</span>
+                  <span class="smart-bundle__value" data-subtotal></span>
+                </div>
+                <div class="smart-bundle__total-row smart-bundle__total-row--discount" data-discount-row hidden>
+                  <span class="smart-bundle__label">Discount</span>
+                  <span class="smart-bundle__value" data-discount></span>
+                </div>
+                <div class="smart-bundle__total-row smart-bundle__total-row--grand">
+                  <span class="smart-bundle__label">Total</span>
+                  <span class="smart-bundle__value" data-total></span>
+                </div>
+                <div class="smart-bundle__savings" data-savings-row hidden>
+                  <span class="smart-bundle__savings-text" data-savings></span>
+                </div>
+                <p class="smart-bundle__sr-live visually-hidden" aria-live="polite" aria-atomic="true" data-sr-live></p>
+              </div>
+
+              <div class="smart-bundle__cta">
+                <button type="button" class="button button--full-width" data-add-bundle disabled>
+                  <span data-add-bundle-label>Add bundle to cart</span>
+                  <span class="smart-bundle__btn-icon" aria-hidden="true" data-add-bundle-icon></span>
+                  {% render 'loading-spinner', class: 'loading__spinner smart-bundle__spinner hidden' %}
+                </button>
+                <p class="smart-bundle__error" role="status" aria-live="polite" data-error hidden></p>
+              </div>
+            </div>
+
+            <template data-summary-item-template>
+              {% render 'smart-bundle-summary-item' %}
+            </template>
+          </aside>
+        </div>
+
+        <script type="application/json" data-products>
+          [
+            {%- for product in curated_products -%}
+              {%- liquid
+                assign first_image = product.featured_media
+                assign first_image_url = ''
+                if first_image
+                  assign first_image_url = first_image | image_url: width: 600
+                endif
+              -%}
+              {
+                "id": {{ product.id | json }},
+                "handle": {{ product.handle | json }},
+                "title": {{ product.title | json }},
+                "url": {{ product.url | json }},
+                "image": {{ first_image_url | json }},
+                "options": {{ product.options | json }},
+                "variants": [
+                  {%- for v in product.variants -%}
+                    {
+                      "id": {{ v.id | json }},
+                      "available": {{ v.available | json }},
+                      "price": {{ v.price | json }},
+                      "options": {{ v.options | json }}
+                    }{%- unless forloop.last -%},{%- endunless -%}
+                  {%- endfor -%}
+                ]
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]
+        </script>
+      {%- endif -%}
+    </smart-bundle-builder>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Smart bundle builder",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Build your bundle"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h1",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Pick items you love and save more as you add.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Products",
+      "limit": 8,
+      "info": "Select 4 to 8 products."
+    },
+    {
+      "type": "range",
+      "id": "bundle_size",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Bundle size",
+      "info": "Items required before shoppers can add the bundle to cart. Listing more products than this still lets them fill every slot (max total items = larger of bundle size or number of products above)."
+    },
+    {
+      "type": "header",
+      "content": "Discount tiers (%)",
+      "info": "Subtotal discount by total bundle quantity: 2 items, 3 items, or 4+. Summary reflects these rates; use Shopify discounts if checkout must match."
+    },
+    {
+      "type": "range",
+      "id": "discount_2",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 5,
+      "label": "2 items discount"
+    },
+    {
+      "type": "range",
+      "id": "discount_3",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 10,
+      "label": "3 items discount"
+    },
+    {
+      "type": "range",
+      "id": "discount_4",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 15,
+      "label": "4+ items discount"
+    },
+    {
+      "type": "checkbox",
+      "id": "redirect_to_cart",
+      "default": false,
+      "label": "Redirect to cart after adding"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Smart bundle builder",
+      "settings": {
+        "bundle_size": 4,
+        "discount_2": 5,
+        "discount_3": 10,
+        "discount_4": 15
+      }
+    }
+  ]
+}
+{% endschema %}

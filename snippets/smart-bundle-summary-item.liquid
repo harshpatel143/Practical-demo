@@ -1,0 +1,26 @@
+{%- comment -%}
+  Smart Bundle Builder summary item template.
+  This is rendered client-side by cloning from a <template>.
+{%- endcomment -%}
+
+<div class="smart-bundle__summary-item" role="listitem">
+  <div class="smart-bundle__summary-thumb" data-thumb></div>
+  <div class="smart-bundle__summary-meta">
+    <p class="smart-bundle__summary-name" data-title></p>
+    <p class="smart-bundle__summary-variant" data-variant></p>
+    <p class="smart-bundle__summary-price" data-line-price></p>
+  </div>
+  <div class="smart-bundle__summary-controls">
+    <button type="button" class="smart-bundle__icon-btn" data-decrement aria-label="Decrease quantity">
+      <span class="svg-wrapper" aria-hidden="true">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+    </button>
+    <span class="smart-bundle__qty" aria-label="Quantity" data-qty>1</span>
+    <button type="button" class="smart-bundle__icon-btn" data-increment aria-label="Increase quantity">
+      <span class="svg-wrapper" aria-hidden="true">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+    </button>
+    <button type="button" class="smart-bundle__icon-btn smart-bundle__icon-btn--remove" data-remove aria-label="Remove item">
+      <span class="svg-wrapper" aria-hidden="true">{{- 'icon-close.svg' | inline_asset_content -}}</span>
+    </button>
+  </div>
+</div>
+
