@@ -17,11 +17,11 @@
     </h2>
 
     <a
-        href="#"
+        href="{{ section.settings.link }}"
         aria-label="Shop all best sellers products"
         class="hidden md:flex items-center gap-2 text-sm font-medium hover:underline"
     >
-        Shop All Best Sellers
+        {{ section.settings.view_all_button }}
         <span aria-hidden="true">→</span>
     </a>
 
@@ -108,8 +108,19 @@
     {
         "type": "text",
         "id": "button",
-        "label": "Button",
+        "label": "Show More Button",
         "default": "Show More"
+    },
+    {
+        "type": "text",
+        "id": "view_all_button",
+        "label": "View All Button",
+        "default": "Shop All Best Sellers"
+    },
+    {
+        "type": "url",
+        "id": "link",
+        "label": "Link"
     }
   ],
   "presets": [
