@@ -35,7 +35,7 @@
         class="swiper-wrapper"
     >
 
-        {% for product in  section.settings.collection %}
+        {% for product in  section.settings.collection.products %}
             <div class="swiper-slide{% if forloop.index >= 5 %} mobile-hidden{% endif %}">
                 {% render 'new-product-grid', product: product %}
             </div>
