@@ -81,7 +81,7 @@
         focus:ring-offset-2
         "
     >
-        Show More
+        {{ section.settings.button }}
     </button>
 
     </div>
@@ -104,6 +104,12 @@
         "id": "heading",
         "label": "Heading",
         "default": "Best Seller"
+    },
+    {
+        "type": "text",
+        "id": "button",
+        "label": "Button",
+        "default": "Show More"
     }
   ],
   "presets": [
