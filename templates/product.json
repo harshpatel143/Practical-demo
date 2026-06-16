@@ -99,10 +99,18 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "best_seller_Qknxi7": {
+      "type": "best-seller",
+      "name": "Best Seller",
+      "settings": {
+        "collection": "automated-collection"
+      }
     }
   },
   "order": [
     "main",
-    "related-products"
+    "related-products",
+    "best_seller_Qknxi7"
   ]
 }
