@@ -93,6 +93,7 @@
     },
     "featured_collection_MEL47Y": {
       "type": "featured-collection",
+      "disabled": true,
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "collection": "automated-collection",
