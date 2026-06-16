@@ -3,95 +3,41 @@
     <script src="{{ 'best-seller-section.js' | asset_url }}" defer="defer"></script>
 
     {% assign collection = section.settings.collection %}
-    <div
-        aria-labelledby="best-sellers-heading"
-        class="custom-best-seller max-w-[1440px] mx-auto px-4 md:px-6 py-10 md:py-16"
-    >
-
+    <div aria-labelledby="best-sellers-heading" class="custom-best-seller max-w-[1440px] mx-auto px-4 md:px-6 py-10 md:py-16">
         <!-- Header -->
         <header class="flex items-center justify-between mb-8 md:mb-10">
-
-        <h2
-            id="best-sellers-heading"
-            class="text-[32px] md:text-[48px] font-black leading-none"
-        >
-            {{ section.settings.heading }}
-        </h2>
-
-        {% if section.settings.link != blank and section.settings.view_all_button != blank %}
-        <a
-            href="{{ section.settings.link }}"
-            aria-label="Shop all best sellers products"
-            class="hidden md:flex items-center gap-2 text-sm font-medium hover:underline"
-        >
-            {{ section.settings.view_all_button }}
-            <span aria-hidden="true">→</span>
-        </a>
-        {% endif %}
-
+            <h2 id="best-sellers-heading" class="text-[32px] md:text-[48px] font-black leading-none">
+                {{ section.settings.heading }}
+            </h2>
+            {% if section.settings.link != blank and section.settings.view_all_button != blank %}
+                <a href="{{ section.settings.link }}" aria-label="Shop all best sellers products" class="hidden md:flex items-center gap-2 text-sm font-medium hover:underline">
+                    {{ section.settings.view_all_button }}
+                    <span aria-hidden="true">→</span>
+                </a>
+            {% endif %}
         </header>
 
         <!-- Swiper -->
-        <div
-        class="swiper productSwiper"
-        aria-label="Best sellers products"
-        >
-
-        <div
-            id="productWrapper"
-            class="swiper-wrapper"
-        >
-
-            {% for product in  collection.products %}
-                <div class="swiper-slide{% if forloop.index >= 5 %} mobile-hidden{% endif %}">
-                    {% render 'new-product-grid', product: product %}
-                </div>
-            {% endfor %}
-
-
-        
-
-        </div>
-
-        <!-- Desktop Scrollbar -->
-        <div
-            class="swiper-scrollbar mt-6 hidden md:block"
-            aria-hidden="true"
-        ></div>
-
+        <div class="swiper productSwiper" aria-label="Best sellers products">
+            <div id="productWrapper" class="swiper-wrapper">
+                {% for product in  collection.products %}
+                    <div class="swiper-slide{% if forloop.index >= 5 %} mobile-hidden{% endif %}">
+                        {% render 'new-product-grid', product: product %}
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Desktop Scrollbar -->
+            <div class="swiper-scrollbar mt-6 hidden md:block" aria-hidden="true"></div>
         </div>
 
         <!-- Mobile Button -->
-        <div class="mt-8 md:hidden">
-
         {% if section.settings.button != blank %}
-            <button
-                id="showMoreBtn"
-                type="button"
-                aria-expanded="false"
-                aria-controls="productWrapper"
-                class="
-                w-full
-                rounded-full
-                bg-black
-                text-white
-                py-4
-                text-[16px]
-                font-semibold
-                transition
-                hover:opacity-90
-                focus:outline-none
-                focus:ring-2
-                focus:ring-black
-                focus:ring-offset-2
-                "
-            >
-                {{ section.settings.button }}
-            </button>
+            <div class="mt-8 md:hidden">
+                <button id="showMoreBtn" type="button" aria-expanded="false" aria-controls="productWrapper" class="w-full rounded-full bg-black text-white py-4 text-[16px] font-semibold transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
+                    {{ section.settings.button }}
+                </button>
+            </div>
         {% endif %}
-
-        </div>
-
     </div>
 {% endif %}
 
