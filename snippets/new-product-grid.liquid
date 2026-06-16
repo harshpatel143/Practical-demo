@@ -1,55 +1,53 @@
-<li class="swiper-slide product-card">
-    <product-card class="group w-full">
-        
-        <div class="relative aspect-square overflow-hidden rounded-2xl">
-        <a href="#" class="absolute w-[100%] h-[100%] z-10"></a>
+<product-card class="group w-full">
+    
+    <div class="relative aspect-square overflow-hidden rounded-2xl">
+    <a href="#" class="absolute w-[100%] h-[100%] z-10"></a>
 
-        <span
-            class="absolute top-3 left-3 z-10 bg-white border border-gray-200 rounded-full px-3 py-1 text-[10px] font-semibold"
-        >
-            BEST SELLER
-        </span>
+    <span
+        class="absolute top-3 left-3 z-10 bg-white border border-gray-200 rounded-full px-3 py-1 text-[10px] font-semibold"
+    >
+        BEST SELLER
+    </span>
 
 
-        <img
-            src="{{ product.featured_image | image_url: width: 800 }}"
-            alt="{{ product.featured_image.alt | default: product.title }}"
-            loading="lazy"
-            width="800"
-            height="800"
-            tabindex="0"
-            class="primary-image absolute inset-0 w-full h-full object-cover"
-        >
+    <img
+        src="{{ product.featured_image | image_url: width: 800 }}"
+        alt="{{ product.featured_image.alt | default: product.title }}"
+        loading="lazy"
+        width="800"
+        height="800"
+        tabindex="0"
+        class="primary-image absolute inset-0 w-full h-full object-cover"
+    >
 
-        <img
-            src="{% if product.images.size > 1 %}{{ product.images[1] | image_url: width: 800 }}{% else %}{{ product.featured_image | image_url: width: 800 }}{% endif %}"
-            alt="{{ product.featured_image.alt | default: product.title }}"
-            loading="lazy"
-            width="800"
-            height="800"
-            tabindex="0"
-            class="secondary-image absolute inset-0 w-full h-full object-cover opacity-0"
-        >
-        
-        </div>
+    <img
+        src="{% if product.images.size > 1 %}{{ product.images[1] | image_url: width: 800 }}{% else %}{{ product.featured_image | image_url: width: 800 }}{% endif %}"
+        alt="{{ product.featured_image.alt | default: product.title }}"
+        loading="lazy"
+        width="800"
+        height="800"
+        tabindex="0"
+        class="secondary-image absolute inset-0 w-full h-full object-cover opacity-0"
+    >
+    
+    </div>
 
-        <div class="pt-4">
-        <h3 class="text-[16px] font-semibold uppercase leading-[1.4]">
-            {{  product.title }}
-        </h3>
+    <div class="pt-4">
+    <h3 class="text-[16px] font-semibold uppercase leading-[1.4]">
+        {{  product.title }}
+    </h3>
 
-        <div
-            class="mt-2 text-sm text-gray-600"
-            aria-label="Rated 5 out of 5 stars from 1234 reviews"
-        >
-            <span aria-hidden="true">★★★★★</span>
-            <span>1,234 Reviews</span>
-        </div>
+    <div
+        class="mt-2 text-sm text-gray-600"
+        aria-label="Rated 5 out of 5 stars from 1234 reviews"
+    >
+        <span aria-hidden="true">★★★★★</span>
+        <span>1,234 Reviews</span>
+    </div>
 
-        <p class="mt-3 text-[16px] font-semibold">
-            {{  product.price | money }}
-        </p>
-        </div>
+    <p class="mt-3 text-[16px] font-semibold">
+        {{  product.price | money }}
+    </p>
+    </div>
 
-    </product-card>
-    </li>
+</product-card>
