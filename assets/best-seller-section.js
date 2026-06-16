@@ -1,40 +1,10 @@
 /* ==========================================
-   Image Hover Swap
+   Reduced Motion Preference
 ========================================== */
 
-function initImageHover() {
-  const images = document.querySelectorAll(".product-image");
-
-  images.forEach((image) => {
-    const primary = image.dataset.primary;
-    const hover = image.dataset.hover;
-
-    image.addEventListener("mouseenter", () => {
-      image.src = hover;
-    });
-
-    image.addEventListener("mouseleave", () => {
-      image.src = primary;
-    });
-
-    // Touch devices
-    image.addEventListener(
-      "touchstart",
-      () => {
-        image.src = hover;
-      },
-      { passive: true }
-    );
-
-    image.addEventListener(
-      "touchend",
-      () => {
-        image.src = primary;
-      },
-      { passive: true }
-    );
-  });
-}
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
 
 /* ==========================================
    Mobile Show More / Show Less
@@ -76,12 +46,17 @@ let swiper = null;
 
 function initSwiper() {
   if (window.innerWidth >= 768) {
+
     if (!swiper) {
+
       swiper = new Swiper(".productSwiper", {
+
         slidesPerView: 5,
         spaceBetween: 24,
 
-        speed: 500,
+        speed: prefersReducedMotion
+          ? 0
+          : 500,
 
         mousewheel: {
           forceToAxis: true,
@@ -89,6 +64,7 @@ function initSwiper() {
 
         keyboard: {
           enabled: true,
+          onlyInViewport: true,
         },
 
         a11y: {
@@ -102,26 +78,45 @@ function initSwiper() {
         },
 
         watchOverflow: true,
+
+        observer: true,
+        observeParents: true,
+
       });
+
     }
+
   } else {
+
     if (swiper) {
       swiper.destroy(true, true);
       swiper = null;
     }
+
   }
 }
 
 /* ==========================================
-   Initialize App
+   Resize Handler
 ========================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-  initImageHover();
-  initShowMore();
+function handleResize() {
   initSwiper();
+}
 
-  window.addEventListener("resize", () => {
+window.addEventListener("resize", handleResize);
+
+/* ==========================================
+   Initialize Application
+========================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    initShowMore();
+
     initSwiper();
-  });
-});
+
+  }
+);
