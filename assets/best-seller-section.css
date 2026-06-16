@@ -131,6 +131,7 @@ body {
 .custom-best-seller .productSwiper .swiper-scrollbar-drag {
   background: #111111;
   border-radius: 999px;
+  display: block;
 }
 
 /* ==========================================
