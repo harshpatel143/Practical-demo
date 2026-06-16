@@ -19,13 +19,13 @@
 
         <!-- Swiper -->
         <div class="swiper productSwiper" aria-label="Best sellers products">
-            <div id="productWrapper" class="swiper-wrapper">
+            <ul id="product-list" class="swiper-wrapper">
                 {% for product in  collection.products %}
-                    <div class="swiper-slide{% if forloop.index >= 5 %} mobile-hidden{% endif %}">
-                        {% render 'new-product-grid', product: product %}
-                    </div>
+                <li class="swiper-slide product-card{% if forloop.index >= 5 %} mobile-hidden{% endif %}">
+                    {% render 'new-product-grid', product: product %}
+                </li>
                 {% endfor %}
-            </div>
+            </ul>
             <!-- Desktop Scrollbar -->
             <div class="swiper-scrollbar mt-6 md:block" aria-hidden="true"></div>
         </div>
