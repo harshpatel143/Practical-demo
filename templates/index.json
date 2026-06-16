@@ -125,7 +125,11 @@
       "type": "best-seller",
       "name": "Best Seller",
       "settings": {
-        "collection": "automated-collection"
+        "collection": "best-seller",
+        "heading": "Best Seller",
+        "button": "Show More",
+        "view_all_button": "Shop All Best Sellers",
+        "link": "shopify://collections/best-seller"
       }
     }
   },
