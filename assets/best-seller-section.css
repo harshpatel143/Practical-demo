@@ -25,6 +25,16 @@ body {
   transform: scale(1.03);
 }
 
+.custom-best-seller .product-card:hover .primary-image,
+.custom-best-seller .product-card:focus-within .primary-image {
+  opacity: 0;
+}
+
+.custom-best-seller .product-card:hover .secondary-image,
+.custom-best-seller .product-card:focus-within .secondary-image {
+  opacity: 1;
+}
+
 /* ==========================================
    Desktop Swiper
 ========================================== */
