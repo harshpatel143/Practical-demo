@@ -108,7 +108,7 @@
         "heading": "Best Seller",
         "button": "Show More",
         "view_all_button": "Shop All Best Sellers",
-        "link": ""
+        "link": "shopify://collections/best-seller"
       }
     }
   },
