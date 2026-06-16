@@ -15,13 +15,13 @@ body {
    Product Image Hover
 ========================================== */
 
-.product-image {
+.custom-best-seller .product-image {
   transition:
     transform 0.3s ease,
     opacity 0.3s ease;
 }
 
-.product-image:hover {
+.custom-best-seller .product-image:hover {
   transform: scale(1.03);
 }
 
@@ -31,13 +31,13 @@ body {
 
 @media (min-width: 768px) {
 
-  .productSwiper {
+  .custom-best-seller .productSwiper {
     overflow: hidden;
     padding-bottom: 28px;
   }
 
   /* Exactly 5 cards visible */
-  .productSwiper .swiper-slide {
+  .custom-best-seller .productSwiper .swiper-slide {
     height: auto;
     display: flex;
   }
@@ -52,47 +52,42 @@ body {
 
   /* Convert Swiper into Grid */
 
-  .productSwiper .swiper-wrapper {
+  .custom-best-seller .productSwiper .swiper-wrapper {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
-
     transform: none !important;
   }
 
-  .productSwiper .swiper-slide {
+  .custom-best-seller .productSwiper .swiper-slide {
     width: 100% !important;
     margin-right: 0 !important;
   }
 
   /* Hide products after first 4 */
 
-  .mobile-hidden {
+  .custom-best-seller .mobile-hidden {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-
     transform: translateY(-8px);
-
     transition:
       max-height 0.4s ease,
       opacity 0.3s ease,
       transform 0.3s ease;
-
     pointer-events: none;
   }
 
-  .mobile-hidden.show {
+  .custom-best-seller .mobile-hidden.show {
     max-height: 1000px;
     opacity: 1;
     transform: translateY(0);
-
     pointer-events: auto;
   }
 
   /* Hide desktop scrollbar on mobile */
 
-  .swiper-scrollbar {
+  .custom-best-seller .swiper-scrollbar {
     display: none !important;
   }
 }
@@ -103,11 +98,10 @@ body {
 
 @media (min-width: 768px) {
 
-  .mobile-hidden {
+  .custom-best-seller .mobile-hidden {
     max-height: none !important;
     opacity: 1 !important;
     overflow: visible !important;
-
     transform: none !important;
     pointer-events: auto !important;
   }
@@ -118,14 +112,11 @@ body {
    Swiper Scrollbar
 ========================================== */
 
-.productSwiper .swiper-scrollbar {
+.custom-best-seller .productSwiper .swiper-scrollbar {
   position: relative !important;
-
   height: 3px;
   background: #e5e5e5;
-
   border-radius: 999px;
-
   transition:
     height 0.3s ease,
     background 0.3s ease;
@@ -133,11 +124,11 @@ body {
 
 /* Requirement: 6px on hover/touch */
 
-.productSwiper:hover .swiper-scrollbar {
+.custom-best-seller .productSwiper:hover .swiper-scrollbar {
   height: 6px;
 }
 
-.productSwiper .swiper-scrollbar-drag {
+.custom-best-seller .productSwiper .swiper-scrollbar-drag {
   background: #111111;
   border-radius: 999px;
 }
@@ -146,7 +137,7 @@ body {
    Accessibility
 ========================================== */
 
-button:focus-visible,
+.custom-best-seller button:focus-visible,
 a:focus-visible {
   outline: 2px solid #111111;
   outline-offset: 2px;
@@ -161,7 +152,6 @@ a:focus-visible {
   * {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
-
     scroll-behavior: auto !important;
   }
 
