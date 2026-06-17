@@ -89,13 +89,7 @@ window.addEventListener("resize", handleResize);
    Initialize Application
 ========================================== */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    initShowMore();
-
-    initSwiper();
-
-  }
-);
+document.addEventListener("DOMContentLoaded",() => {
+  initShowMore();
+  initSwiper();
+});
