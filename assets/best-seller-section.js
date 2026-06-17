@@ -42,7 +42,7 @@ function initSwiper() {
   if (window.innerWidth >= 768) {
     if (!swiper) {
       swiper = new Swiper(".productSwiper", {
-        slidesPerView: 4.8,
+        slidesPerView: 4.5,
         spaceBetween: 24,
         speed: prefersReducedMotion
           ? 0
