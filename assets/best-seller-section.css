@@ -35,6 +35,10 @@ body {
   opacity: 1;
 }
 
+.custom-best-seller .productSwiper .swiper-slide .product-tag-badge {
+  font-family: var(--font-heading-family);
+}
+
 /* ==========================================
    Desktop Swiper
 ========================================== */
