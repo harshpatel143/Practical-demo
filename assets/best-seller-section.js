@@ -51,7 +51,7 @@ function initSwiper() {
 
       swiper = new Swiper(".productSwiper", {
 
-        slidesPerView: 5,
+        slidesPerView: 4.8,
         spaceBetween: 24,
 
         speed: prefersReducedMotion
