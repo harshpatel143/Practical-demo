@@ -7,11 +7,11 @@
         <div aria-labelledby="best-sellers-heading" class="custom-best-seller max-w-[1440px] mx-auto px-4 md:px-6 py-10 md:py-16">
             <!-- Header -->
             <header class="flex items-center justify-between mb-8 md:mb-10">
-                <h2 id="best-sellers-heading" class="text-[32px] md:text-[40px] text-[#231F20] -tracking-[0.01em] leading-none">
+                <h2 id="best-sellers-heading" class="text-[28px] md:text-[40px] text-[#231F20] -tracking-[0.01em] leading-none">
                     {{ section.settings.heading }}
                 </h2>
                 {% if section.settings.link != blank and section.settings.view_all_button != blank %}
-                    <a href="{{ section.settings.link }}" aria-label="Shop all best sellers products" class="md:flex items-center gap-2 text-[16px] font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+                    <a href="{{ section.settings.link }}" aria-label="Shop all best sellers products" class="hidden md:flex items-center gap-2 text-[16px] font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
                         {{ section.settings.view_all_button }}
                         <span aria-hidden="true">→</span>
                     </a>
