@@ -10,7 +10,14 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
-
+@font-face {
+    font-family: 'Source Serif Pro';
+    src: url('https://cdn.shopify.com/s/files/1/0683/1924/8427/files/SourceSerifPro-Bold.woff2?v=1781684727') format('woff2'),
+        url('https://cdn.shopify.com/s/files/1/0683/1924/8427/files/SourceSerifPro-Bold.woff?v=1781684728') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
 /* ==========================================
    Product Image Hover
 ========================================== */
