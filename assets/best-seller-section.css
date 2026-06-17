@@ -42,7 +42,7 @@ body {
 @media (min-width: 768px) {
 
   .custom-best-seller .productSwiper {
-    overflow: hidden;
+    overflow: visible;
     padding-bottom: 28px;
   }
 
