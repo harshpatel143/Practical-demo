@@ -83,7 +83,7 @@
     {%- endif -%}
 
     <div class="lense-model-content" role="dialog" aria-modal="true" aria-labelledby="LenseModalTitle-{{ block.id }}" hidden>
-      <div class="lense-model-backdrop" data-lense-close></div>
+      <div class="lense-model-backdrop" aria-hidden="true"></div>
       <div class="lense-model-dialog">
         <div class="lense-model-header">
           <button type="button" class="lense-model-back" data-lense-back aria-label="Back" hidden>
@@ -95,7 +95,7 @@
             <p class="lense-model-step-label" data-lense-step-label>Step 1 of 4</p>
             <h2 class="lense-model-title" id="LenseModalTitle-{{ block.id }}" data-lense-title>Select Contact Lens Type</h2>
           </div>
-          <button type="button" class="lense-model-close" data-lense-close aria-label="Close">
+          <button type="button" class="lense-model-close" aria-label="Close">
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="icon icon-close" fill="none" viewBox="0 0 18 17">
               <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.159-.372L9.71 8.704l7.45-7.45a.5.5 0 10-.707-.708L8.991 8.017.865.89A.5.5 0 10.158 1.6l7.433 7.433L.865 15.978z" fill="currentColor"/>
             </svg>

@@ -118,12 +118,35 @@ class CustomLensePopup {
   }
 
   bindEvents() {
-    this.openBtn.addEventListener('click', () => this.open());
-    this.root.querySelectorAll('[data-lense-close]').forEach((el) => {
-      el.addEventListener('click', () => this.close());
+    this.openBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.open();
     });
+
+    this.root.querySelectorAll('.lense-model-close').forEach((el) => {
+      el.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.close();
+      });
+    });
+
     this.backBtn?.addEventListener('click', () => this.goBack());
     this.continueBtn?.addEventListener('click', () => this.goNext());
+
+    this.boundOutsideClose = this.onOutsideClose.bind(this);
+    this.modal.addEventListener('mousedown', this.boundOutsideClose);
+    this.modal.addEventListener('touchstart', this.boundOutsideClose, { passive: true });
+  }
+
+  onOutsideClose(event) {
+    if (!this.modal.classList.contains('active')) return;
+
+    const dialog = this.modal.querySelector('.lense-model-dialog');
+    // Close only when the press is outside the dialog panel
+    if (dialog && dialog.contains(event.target)) return;
+
+    this.close();
   }
 
   getSelectedLens() {
@@ -141,22 +164,35 @@ class CustomLensePopup {
     this.state = this.defaultState();
     this.clearError();
     this.renderStep();
-    this.modal.hidden = false;
+
+    // Move overlay to <body> so sticky/transform parents cannot trap fixed positioning
+    if (this.modal.parentElement !== document.body) {
+      this.modalPlaceholder = document.createComment('lense-model-placeholder');
+      this.modal.parentNode?.insertBefore(this.modalPlaceholder, this.modal);
+      document.body.appendChild(this.modal);
+    }
+
+    this.modal.removeAttribute('hidden');
     this.modal.classList.add('active');
     document.body.classList.add('lense-model-open');
     document.addEventListener('keydown', this.boundKeyHandler);
-    requestAnimationFrame(() => {
-      this.modal.querySelector('.lense-model-dialog')?.focus?.();
-      (this.backBtn?.hidden ? this.continueBtn : this.backBtn)?.focus?.();
-    });
   }
 
   close() {
+    if (!this.modal) return;
+
     this.modal.classList.remove('active');
-    this.modal.hidden = true;
+    this.modal.setAttribute('hidden', '');
     document.body.classList.remove('lense-model-open');
     document.removeEventListener('keydown', this.boundKeyHandler);
-    this.openBtn?.focus();
+
+    if (this.modalPlaceholder?.parentNode) {
+      this.modalPlaceholder.parentNode.insertBefore(this.modal, this.modalPlaceholder);
+      this.modalPlaceholder.remove();
+      this.modalPlaceholder = null;
+    }
+
+    this.openBtn?.focus({ preventScroll: true });
   }
 
   onKeydown(event) {
