@@ -98,6 +98,7 @@
     },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -112,6 +113,17 @@
         "show_rating": false,
         "padding_top": 36,
         "padding_bottom": 28
+      }
+    },
+    "best_seller_Qknxi7": {
+      "type": "best-seller",
+      "name": "Best Seller",
+      "settings": {
+        "collection": "best-seller",
+        "heading": "Best Seller",
+        "button": "Show More",
+        "view_all_button": "Shop All Best Sellers",
+        "link": "#"
       }
     }
   },

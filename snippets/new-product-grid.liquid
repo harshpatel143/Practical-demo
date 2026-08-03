@@ -1,0 +1,51 @@
+<article class="group w-full">
+    
+    <div class="relative aspect-square overflow-hidden rounded-2xl">
+    <a href="{{ product.url }}" class="absolute w-[100%] h-[100%] z-10" aria-label="{{ product.title }}"></a>
+
+    <span
+        class="absolute top-3 left-3 z-10 bg-white border border-gray-200 rounded-full px-3 py-1 text-[10px] font-semibold"
+    >
+        BEST SELLER
+    </span>
+
+
+    <img
+        src="{{ product.featured_image | image_url: width: 800 }}"
+        alt="{{ product.featured_image.alt | default: product.title }}"
+        loading="lazy"
+        width="800"
+        height="800"
+        class="primary-image absolute inset-0 w-full h-full object-cover"
+    >
+
+    <img
+        src="{% if product.images.size > 1 %}{{ product.images[1] | image_url: width: 800 }}{% else %}{{ product.featured_image | image_url: width: 800 }}{% endif %}"
+        alt="{{ product.featured_image.alt | default: product.title }}"
+        loading="lazy"
+        width="800"
+        height="800"
+        class="secondary-image absolute inset-0 w-full h-full object-cover opacity-0"
+    >
+    
+    </div>
+
+    <div class="pt-4">
+    <h3 class="text-[18px] max-md:text-[16px] text-[#1C1D1D] font-normal tracking-[0.03em] uppercase leading-[1.4]">
+        {{  product.title }}
+    </h3>
+
+    <div
+        class="mt-[8px] text-[14px] max-md:text-[11px] text-[#707070] leading-none"
+        aria-label="Rated 5 out of 5 stars from 1234 reviews"
+    >
+        <span class="text-[#231F20]" aria-hidden="true">★★★★★</span>
+        <span>1,234 Reviews</span>
+    </div>
+
+    <p class="mt-[8px] text-[#1C1D1D] text-[16px] font-medium ">
+        {{  product.price | money }}
+    </p>
+    </div>
+
+</article>

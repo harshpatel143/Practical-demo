@@ -1,0 +1,88 @@
+{% if section.settings.collection != blank %}
+    {{ 'best-seller-section.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'best-seller-section.js' | asset_url }}" defer="defer"></script>
+
+    {% assign collection = section.settings.collection %}
+    <div class="custom-best-seller overflow-hidden">
+        <div aria-labelledby="best-sellers-heading" class="max-w-[1440px] mx-auto px-4 md:px-6 py-10 md:py-16">
+            <!-- Header -->
+            <header class="flex items-center justify-between mb-[24px] max-md:justify-center md:mb-10">
+                <h2 id="best-sellers-heading" class="font-['Source_Serif_Pro'] text-[28px] md:text-[40px] text-[#231F20] -tracking-[0.01em] leading-none capitalize">
+                    {{ section.settings.heading }}
+                </h2>
+                {% if section.settings.link != blank and section.settings.view_all_button != blank %}
+                    <a href="{{ section.settings.link }}" aria-label="Shop all best sellers products" class="hidden md:!flex items-center gap-2 text-[14px] font-semibold text-[#5C553A] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+                        {{ section.settings.view_all_button }}
+                        <span aria-hidden="true">→</span>
+                    </a>
+                {% endif %}
+            </header>
+
+            <!-- Swiper -->
+            <div class="swiper productSwiper" aria-label="Best sellers products">
+                <ul id="product-list" class="swiper-wrapper">
+                    {% for product in  collection.products %}
+                    <li class="swiper-slide product-card{% if forloop.index >= 5 %} mobile-hidden{% endif %}">
+                        {% render 'new-product-grid', product: product %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                <!-- Desktop Scrollbar -->
+                <div class="swiper-scrollbar mt-6 md:block" aria-hidden="true"></div>
+            </div>
+
+            <!-- Mobile Button -->
+            {% if section.settings.button != blank %}
+                <div class="mt-8 md:hidden">
+                    <button id="showMoreBtn" type="button" aria-expanded="false" aria-controls="productWrapper" class="w-full rounded-full bg-black text-white py-4 text-[16px] font-semibold transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 min-h-[54px] tracking-[0.03em]">
+                        {{ section.settings.button }}
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Best Seller",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+    },
+    {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Best Seller"
+    },
+    {
+        "type": "text",
+        "id": "button",
+        "label": "Show More Button",
+        "default": "Show More"
+    },
+    {
+        "type": "text",
+        "id": "view_all_button",
+        "label": "View All Button",
+        "default": "Shop All Best Sellers"
+    },
+    {
+        "type": "url",
+        "id": "link",
+        "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Seller"
+    }
+  ]
+}
+{% endschema %}

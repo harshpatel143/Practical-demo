@@ -1,0 +1,180 @@
+/* ==========================================
+   Global
+========================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
+    font-family: 'Source Serif Pro';
+    src: url('https://cdn.shopify.com/s/files/1/0683/1924/8427/files/SourceSerifPro-Bold.woff2?v=1781684727') format('woff2'),
+        url('https://cdn.shopify.com/s/files/1/0683/1924/8427/files/SourceSerifPro-Bold.woff?v=1781684728') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+/* ==========================================
+   Product Image Hover
+========================================== */
+
+.custom-best-seller .product-image {
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.custom-best-seller .product-image:hover {
+  transform: scale(1.03);
+}
+
+.custom-best-seller .product-card:hover .primary-image,
+.custom-best-seller .product-card:focus-within .primary-image {
+  opacity: 0;
+}
+
+.custom-best-seller .product-card:hover .secondary-image,
+.custom-best-seller .product-card:focus-within .secondary-image {
+  opacity: 1;
+}
+
+.custom-best-seller .productSwiper .swiper-slide .product-tag-badge {
+  font-family: var(--font-heading-family);
+}
+
+/* ==========================================
+   Desktop Swiper
+========================================== */
+
+@media (min-width: 768px) {
+
+  .custom-best-seller .productSwiper {
+    overflow: visible;
+    padding-bottom: 28px;
+  }
+
+  /* Exactly 5 cards visible */
+  .custom-best-seller .productSwiper .swiper-slide {
+    height: auto;
+    display: flex;
+  }
+
+}
+
+/* ==========================================
+   Mobile Grid
+========================================== */
+
+@media (max-width: 767px) {
+
+  /* Convert Swiper into Grid */
+
+  .custom-best-seller .productSwiper .swiper-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+    transform: none !important;
+  }
+
+  .custom-best-seller .productSwiper .swiper-slide {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+
+  /* Hide products after first 4 */
+
+  .custom-best-seller .mobile-hidden {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-8px);
+    transition:
+      max-height 0.4s ease,
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    pointer-events: none;
+  }
+
+  .custom-best-seller .mobile-hidden.show {
+    max-height: 1000px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Hide desktop scrollbar on mobile */
+
+  .custom-best-seller .swiper-scrollbar {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   Desktop: Always Show All Products
+========================================== */
+
+@media (min-width: 768px) {
+
+  .custom-best-seller .mobile-hidden {
+    max-height: none !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+
+}
+
+/* ==========================================
+   Swiper Scrollbar
+========================================== */
+
+.custom-best-seller .productSwiper .swiper-scrollbar {
+  position: relative !important;
+  height: 3px;
+  background: #e5e5e5;
+  border-radius: 999px;
+  transition:
+    height 0.3s ease,
+    background 0.3s ease;
+}
+
+/* Requirement: 6px on hover/touch */
+
+.custom-best-seller .productSwiper:hover .swiper-scrollbar {
+  height: 6px;
+}
+
+.custom-best-seller .productSwiper .swiper-scrollbar-drag {
+  background: #111111;
+  border-radius: 999px;
+  display: block;
+}
+
+/* ==========================================
+   Accessibility
+========================================== */
+
+.custom-best-seller button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+/* ==========================================
+   Reduce Motion Preference
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+}
