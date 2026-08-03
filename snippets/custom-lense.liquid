@@ -1,0 +1,120 @@
+{{ 'custom-lense.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-lense.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign contact_lenses = product.metafields.custom.contact_lenses.value
+  assign product_form_id = 'product-form-' | append: section.id
+  assign saved_prescription = customer.metafields.custom.saved_prescription.value
+  assign default_field_defs = 'sph|SPH|eye|sphere,SPH;cyl|CYL|eye|cylinder,CYL;axis|AXIS|eye|AXIS;add|ADD|eye|addition,ADD;base_curve|Base Curve|shared|bc,basecurve,Base Curve;diameter|Diameter|shared|dia,Diameter;day_night|Day/Night|shared|day_or_night,daynight,Day/Night' | split: ';'
+  assign default_power_handle = 'power-configuration-4vaaltlh'
+  assign default_power = shop.metaobjects.power_configuration[default_power_handle]
+  if default_power == blank
+    assign default_power = shop.metaobjects['power_configuration'][default_power_handle]
+  endif
+  if default_power == blank
+    assign default_power = shop.metaobjects['power-configuration'][default_power_handle]
+  endif
+  assign has_lense_config = false
+  if contact_lenses != blank or default_power != blank
+    assign has_lense_config = true
+  endif
+-%}
+
+<div
+  class="custom-lense-content"
+  data-custom-lense
+  data-block-id="{{ block.id }}"
+  data-product-form-id="{{ product_form_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="custom-lense-popup">
+    <button type="button" class="open-model button button--full-width"{% unless has_lense_config %} disabled aria-disabled="true"{% endunless %}>
+      {{ block.settings.button | default: 'Select Lenses' }}
+    </button>
+
+    {%- if has_lense_config -%}
+      <script type="application/json" data-lense-config>
+        {
+          "variantId": {{ product.selected_or_first_available_variant.id | json }},
+          "productTitle": {{ product.title | json }},
+          "customerLoggedIn": {% if customer %}true{% else %}false{% endif %},
+          "savedPrescription": {% if saved_prescription != blank %}{{ saved_prescription | json }}{% else %}null{% endif %},
+          "cartAddUrl": {{ routes.cart_add_url | json }},
+          "cartUrl": {{ routes.cart_url | json }},
+          "powerHandle": {{ default_power_handle | json }},
+          "lensTypes": [
+            {%- if contact_lenses != blank -%}
+              {%- for lens in contact_lenses -%}
+                {%- liquid
+                  assign lens_title = lens.title.value | default: lens.name.value | default: lens.lens_type.value | default: lens.type.value
+                  if lens_title == blank
+                    assign lens_title = lens.system.handle | replace: '-', ' ' | capitalize
+                  endif
+                  assign power = lens.power_configuration.value | default: lens.power_config.value | default: lens.configuration.value
+                  if power == blank
+                    assign power = default_power
+                  endif
+                  assign lens_image = lens.image.value | default: lens.icon.value | default: lens.thumbnail.value
+                -%}
+                {
+                  "id": {{ lens.system.id | json }},
+                  "handle": {{ lens.system.handle | json }},
+                  "title": {{ lens_title | json }},
+                  "image": {% if lens_image != blank %}{{ lens_image | image_url: width: 120 | json }}{% else %}null{% endif %},
+                  "fields": [
+                    {%- render 'custom-lense-fields', power: power, default_field_defs: default_field_defs -%}
+                  ]
+                }{% unless forloop.last %},{% endunless %}
+              {%- endfor -%}
+            {%- elsif default_power != blank -%}
+              {
+                "id": {{ default_power.system.id | json }},
+                "handle": {{ default_power_handle | json }},
+                "title": {{ default_power.title.value | default: default_power.name.value | default: 'Contact Lens' | json }},
+                "image": null,
+                "fields": [
+                  {%- render 'custom-lense-fields', power: default_power, default_field_defs: default_field_defs -%}
+                ]
+              }
+            {%- endif -%}
+          ]
+        }
+      </script>
+    {%- endif -%}
+
+    <div class="lense-model-content" role="dialog" aria-modal="true" aria-labelledby="LenseModalTitle-{{ block.id }}" hidden>
+      <div class="lense-model-backdrop" data-lense-close></div>
+      <div class="lense-model-dialog">
+        <div class="lense-model-header">
+          <button type="button" class="lense-model-back" data-lense-back aria-label="Back" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <div class="lense-model-header__text">
+            <p class="lense-model-step-label" data-lense-step-label>Step 1 of 4</p>
+            <h2 class="lense-model-title" id="LenseModalTitle-{{ block.id }}" data-lense-title>Select Contact Lens Type</h2>
+          </div>
+          <button type="button" class="lense-model-close" data-lense-close aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="icon icon-close" fill="none" viewBox="0 0 18 17">
+              <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.159-.372L9.71 8.704l7.45-7.45a.5.5 0 10-.707-.708L8.991 8.017.865.89A.5.5 0 10.158 1.6l7.433 7.433L.865 15.978z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="lense-model-progress" aria-hidden="true">
+          <span class="lense-model-progress__bar" data-lense-progress-bar></span>
+        </div>
+
+        <div class="lense-model-body" data-lense-body></div>
+
+        <div class="lense-model-footer">
+          <p class="lense-model-error" data-lense-error hidden></p>
+          <button type="button" class="button button--primary button--full-width" data-lense-continue disabled>
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

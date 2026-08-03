@@ -1,0 +1,93 @@
+{%- comment -%}
+  Renders power-configuration fields as a JSON array (no surrounding brackets).
+  Required: power, default_field_defs
+{%- endcomment -%}
+{%- liquid
+  assign field_count = 0
+-%}
+{%- if power != blank -%}
+  {%- if power.fields != blank and power.fields.value != blank -%}
+    {%- for field in power.fields.value -%}
+      {%- liquid
+        assign field_key = field.key.value | default: field.field_key.value | default: field.handle.value | default: field.system.handle
+        assign field_label = field.label.value | default: field.name.value | default: field_key
+        assign field_scope = field.scope.value | default: field.type.value | default: 'eye'
+        assign field_values = field.values.value | default: field.options.value | default: field.value.value
+        if field_values == blank
+          assign field_values = field.value
+        endif
+        assign scope_down = field_scope | downcase
+        if scope_down == 'shared' or scope_down == 'both' or scope_down == 'common'
+          assign field_scope = 'shared'
+        else
+          assign field_scope = 'eye'
+        endif
+      -%}
+      {%- if field_key != blank and field_values != blank -%}
+        {%- if field_count > 0 -%},{%- endif -%}
+        {
+          "key": {{ field_key | json }},
+          "label": {{ field_label | json }},
+          "scope": {{ field_scope | json }},
+          "values": {% if field_values.first.system -%}
+            [
+              {%- for option in field_values -%}
+                {%- assign option_label = option.value.value | default: option.label.value | default: option.name.value | default: option.title.value | default: option.system.handle -%}
+                {{ option_label | json }}{% unless forloop.last %},{% endunless %}
+              {%- endfor -%}
+            ]
+          {%- else -%}
+            {{ field_values | json }}
+          {%- endif %}
+        }
+        {%- assign field_count = field_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- for def in default_field_defs -%}
+      {%- liquid
+        assign parts = def | split: '|'
+        assign field_key = parts[0] | strip
+        assign field_label = parts[1] | strip
+        assign field_scope = parts[2] | strip
+        assign alt_keys = parts[3] | split: ','
+        assign field_values = nil
+        assign primary = power[field_key]
+        if primary != blank and primary.value != blank
+          assign field_values = primary.value
+        endif
+        if field_values == blank
+          for alt in alt_keys
+            assign alt_key = alt | strip
+            if alt_key != blank
+              assign alt_field = power[alt_key]
+              if alt_field != blank and alt_field.value != blank
+                assign field_values = alt_field.value
+                break
+              endif
+            endif
+          endfor
+        endif
+      -%}
+      {%- if field_values != blank -%}
+        {%- if field_count > 0 -%},{%- endif -%}
+        {
+          "key": {{ field_key | json }},
+          "label": {{ field_label | json }},
+          "scope": {{ field_scope | json }},
+          "values": {% if field_values.first.system -%}
+            [
+              {%- for option in field_values -%}
+                {%- assign option_label = option.value.value | default: option.label.value | default: option.name.value | default: option.title.value | default: option.system.handle -%}
+                {{ option_label | json }}{% unless forloop.last %},{% endunless %}
+              {%- endfor -%}
+            ]
+          {%- else -%}
+            {{ field_values | json }}
+          {%- endif %}
+        }
+        {%- assign field_count = field_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}

@@ -1,0 +1,451 @@
+/* Contact lens multi-step popup */
+
+.custom-lense-content {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.custom-lense-popup {
+  width: 100%;
+}
+
+.custom-lense-content .open-model {
+  width: 100%;
+}
+
+body.lense-model-open {
+  overflow: hidden;
+}
+
+.lense-model-content {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow: auto;
+  background: #ffffff;;
+}
+
+.lense-model-content.active {
+  display: flex;
+}
+
+.lense-model-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--color-foreground), 0.5);
+}
+
+.lense-model-dialog {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(56rem, 100%);
+  max-height: min(90vh, 72rem);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  border-radius: var(--popup-corner-radius, 0.8rem);
+  box-shadow: var(--popup-shadow-horizontal-offset, 0) var(--popup-shadow-vertical-offset, 0.4rem)
+    var(--popup-shadow-blur-radius, 1.5rem) rgba(var(--color-shadow), var(--popup-shadow-opacity, 0.2));
+  overflow: hidden;
+}
+
+.lense-model-header {
+  display: grid;
+  grid-template-columns: 4rem 1fr 4rem;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1.6rem 1.6rem 1.2rem;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.lense-model-header__text {
+  text-align: center;
+  min-width: 0;
+}
+
+.lense-model-step-label {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.lense-model-title {
+  margin: 0;
+  font-size: calc(var(--font-heading-scale) * 1.8rem);
+  line-height: 1.3;
+}
+
+.lense-model-back,
+.lense-model-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+}
+
+.lense-model-back[hidden] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.lense-model-close .icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.lense-model-progress {
+  height: 0.3rem;
+  background: rgba(var(--color-foreground), 0.08);
+}
+
+.lense-model-progress__bar {
+  display: block;
+  height: 100%;
+  width: 25%;
+  background: rgb(var(--color-button));
+  transition: width var(--duration-default, 0.2s) ease;
+}
+
+.lense-model-body {
+  flex: 1;
+  overflow: auto;
+  padding: 1.6rem;
+}
+
+.lense-model-footer {
+  padding: 1.2rem 1.6rem 1.6rem;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.lense-model-error {
+  margin: 0 0 1rem;
+  color: rgb(var(--color-error, 180 40 40));
+  font-size: 1.3rem;
+}
+
+.lense-step__intro {
+  margin: 0 0 1.6rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.lense-option-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.lense-option {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.4rem 1.6rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.15);
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: border-color var(--duration-short, 0.1s) ease, background-color var(--duration-short, 0.1s) ease;
+}
+
+.lense-option--method {
+  grid-template-columns: 1fr auto;
+}
+
+.lense-option:hover {
+  border-color: rgba(var(--color-foreground), 0.35);
+}
+
+.lense-option.is-selected {
+  border-color: rgb(var(--color-button));
+  background: rgba(var(--color-button), 0.06);
+}
+
+.lense-option.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.lense-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lense-option__media {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(var(--color-foreground), 0.06);
+}
+
+.lense-option__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lense-option__icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  border: 0.2rem solid rgba(var(--color-foreground), 0.35);
+}
+
+.lense-option__title {
+  display: block;
+  font-weight: var(--font-body-weight-bold, 600);
+}
+
+.lense-option__desc {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.lense-option__check {
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 0.15rem solid rgba(var(--color-foreground), 0.25);
+  border-radius: 50%;
+  position: relative;
+}
+
+.lense-option.is-selected .lense-option__check {
+  border-color: rgb(var(--color-button));
+  background: rgb(var(--color-button));
+}
+
+.lense-option.is-selected .lense-option__check::after {
+  content: '';
+  position: absolute;
+  inset: 0.45rem;
+  border-radius: 50%;
+  background: rgb(var(--color-button-text));
+}
+
+.lense-upload {
+  margin-top: 1.6rem;
+  padding: 1.4rem;
+  border: 0.1rem dashed rgba(var(--color-foreground), 0.2);
+  border-radius: 0.6rem;
+  text-align: center;
+}
+
+.lense-upload__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.lense-upload__name {
+  margin: 1rem 0 0;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+  word-break: break-word;
+}
+
+.lense-rx-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.lense-rx-grid__head,
+.lense-rx-grid__row {
+  display: grid;
+  grid-template-columns: minmax(6rem, 0.8fr) 1fr 1fr;
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.lense-rx-grid__head {
+  font-size: 1.2rem;
+  font-weight: var(--font-body-weight-bold, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.lense-rx-grid__key {
+  padding-bottom: 1rem;
+  font-weight: var(--font-body-weight-bold, 600);
+}
+
+.lense-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lense-field--no-label .lense-field__label {
+  display: none;
+}
+
+.lense-field__label {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.lense-field__select,
+.lense-field__input {
+  width: 100%;
+  min-height: 4.2rem;
+  padding: 0.8rem 1.2rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  border-radius: var(--inputs-radius, 0.4rem);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font: inherit;
+}
+
+.lense-same-as {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.4rem 0 1.6rem;
+  cursor: pointer;
+}
+
+.lense-shared-fields__title {
+  margin: 0 0 1rem;
+  font-size: 1.4rem;
+}
+
+.lense-shared-fields__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lense-review {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.lense-review__prescription {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.lense-review__prescription-title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.lense-review__block {
+  padding: 1.2rem 1.4rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+  border-radius: 0.6rem;
+  background: rgba(var(--color-foreground), 0.02);
+}
+
+.lense-review__block h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: rgba(var(--color-foreground), 0.65);
+}
+
+.lense-review__block p {
+  margin: 0;
+  font-weight: var(--font-body-weight-bold, 600);
+}
+
+.lense-review__eyes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lense-review__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.lense-review__list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 1.4rem;
+}
+
+.lense-review__list span {
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.lense-empty {
+  margin: 0;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+@media screen and (max-width: 749px) {
+  .lense-model-content {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .lense-model-dialog {
+    width: 100%;
+    max-height: 100%;
+    height: 100%;
+    border-radius: 0;
+    border: 0;
+  }
+
+  .lense-rx-grid__head {
+    display: none;
+  }
+
+  .lense-rx-grid__row {
+    grid-template-columns: 1fr;
+  }
+
+  .lense-rx-grid__key {
+    display: none;
+  }
+
+  .lense-rx-grid__cell::before {
+    content: attr(data-mobile-label);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: rgba(var(--color-foreground), 0.7);
+  }
+
+  .lense-shared-fields__grid,
+  .lense-review__eyes {
+    grid-template-columns: 1fr;
+  }
+
+  .lense-option {
+    grid-template-columns: 1fr auto;
+  }
+
+  .lense-option__media {
+    display: none;
+  }
+}
